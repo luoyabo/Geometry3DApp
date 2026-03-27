@@ -1,0 +1,80 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'  # 使用Zulu JDK
+        java-version: '17'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.0'  # 稳定的Flutter版本
+        channel: 'stable'
+
+    - name: Accept Android licenses
+      run: |
+        flutter config --no-analytics
+        yes | flutter doctor --android-licenses || true
+
+    - name: Install Flutter dependencies
+      run: flutter pub get
+
+    - name: Verify Flutter installation
+      run: flutter --version
+
+    - name: Run flutter doctor
+      run: flutter doctor -v
+
+    - name: Build APK (debug)
+      run: flutter build apk --debug
+
+    - name: Build APK (release)
+      run: flutter build apk --release
+
+    - name: Build split APKs
+      run: flutter build apk --release --split-per-abi
+
+    - name: Upload debug APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-debug-apk
+        path: build/app/outputs/flutter-apk/app-debug.apk
+        retention-days: 7
+
+    - name: Upload release APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 7
+
+    - name: Upload split APKs
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-split-apks
+        path: build/app/outputs/flutter-apk/
+        retention-days: 7
+
+    - name: Show APK info
+      run: |
+        echo "=== APK文件信息 ==="
+        ls -la build/app/outputs/flutter-apk/
+        echo ""
+        echo "=== 文件大小 ==="
+        du -h build/app/outputs/flutter-apk/*.apk
