@@ -40,6 +40,26 @@
 2. 根据提示安装缺少的组件
 3. 确保Android许可证已接受：`flutter doctor --android-licenses`
 
+## 快速开始（无需安装开发环境）
+
+### 使用GitHub Actions在线构建APK
+
+本仓库已配置GitHub Actions，可自动构建APK文件：
+
+1. **访问仓库Actions页面**: https://github.com/luoyabo/Geometry3DApp/actions
+2. **触发构建**: 点击"Build Android APK" → "Run workflow"
+3. **等待构建完成**: 约5-10分钟
+4. **下载APK**: 在"Artifacts"区域下载生成的APK文件
+5. **安装到手机**: 发送APK到安卓手机，开启"允许安装未知来源应用"后安装
+
+### 在Windows上通过Android模拟器运行
+
+如需在Windows电脑上测试，请参考 [Windows试运行指南.md](Windows试运行指南.md)：
+1. 安装Android Studio
+2. 创建Android虚拟设备（模拟器）
+3. 将APK拖拽到模拟器窗口安装
+4. 运行应用
+
 ## 项目运行
 
 1. 打开Android Studio
@@ -66,18 +86,24 @@ Geometry3DApp/
 
 ## 依赖包
 
-- `flutter_3d_obj`: 3D模型渲染
+- `flutter_3d_view`: 3D模型渲染（立方体、球体、圆柱体、圆锥体）
 - `vector_math`: 数学计算
 - `provider`: 状态管理
 - `flutter_animate`: 动画效果
 
 ## 下一步开发
 
-1. 添加更多3D形状（球体、圆柱体、圆锥体）
-2. 实现几何关系可视化（角度标注、距离测量）
-3. 添加定理动画演示
-4. 完善知识点讲解内容
-5. 优化用户界面和交互体验
+1. 添加更多3D形状（球体、圆柱体、圆锥体）✓ 已实现
+2. 实现几何关系可视化（角度标注、距离测量）✓ 线面角已实现
+3. 添加定理动画演示 ✓ 三垂线定理已实现
+4. 完善知识点讲解内容 ✓ 已实现
+5. 优化用户界面和交互体验 ✓ 已实现
+
+## 相关文档
+
+- [APK打包指南.md](APK打包指南.md) - 详细APK构建和分发指南
+- [GitHub构建指南.md](GitHub构建指南.md) - 使用GitHub Actions在线构建
+- [Windows试运行指南.md](Windows试运行指南.md) - 在Windows模拟器中运行应用
 
 ## 注意事项
 

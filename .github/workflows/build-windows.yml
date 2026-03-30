@@ -1,0 +1,75 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.0'  # 稳定的Flutter版本
+        channel: 'stable'
+        cache: true
+
+    - name: Install Flutter dependencies
+      run: flutter pub get
+
+    - name: Enable Windows platform
+      run: flutter config --enable-windows-desktop
+
+    - name: Verify Flutter installation
+      run: flutter --version
+
+    - name: Run flutter doctor
+      run: flutter doctor -v
+
+    - name: Build Windows executable
+      run: flutter build windows --release
+
+    - name: List build output
+      run: |
+        echo "=== Build output directory ==="
+        dir "build\windows\runner\Release" /b
+        echo "=== File sizes ==="
+        dir "build\windows\runner\Release\*.exe"
+
+    - name: Create release zip
+      run: |
+        $version = "1.0.0"
+        $zipName = "geometry_3d_app_windows_$version.zip"
+        $sourceDir = "build\windows\runner\Release"
+        $destDir = "dist"
+        New-Item -ItemType Directory -Force -Path $destDir
+        Compress-Archive -Path "$sourceDir\*" -DestinationPath "$destDir\$zipName" -Force
+
+    - name: Upload Windows executable
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-executable
+        path: build/windows/runner/Release/geometry_3d_app.exe
+        retention-days: 7
+
+    - name: Upload Windows release zip
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-release-zip
+        path: dist/
+        retention-days: 7
+
+    - name: Show build info
+      run: |
+        echo "=== Build completed successfully ==="
+        echo "Executable: build\windows\runner\Release\geometry_3d_app.exe"
+        echo "Size: $((Get-Item 'build\windows\runner\Release\geometry_3d_app.exe').Length / 1MB) MB"
+        echo "To run: Double-click geometry_3d_app.exe or run from command line"

@@ -25,6 +25,11 @@ build/
 .flutter/
 .settings/
 
+# Windows build
+windows/flutter/ephemeral/
+windows/flutter/generated_plugin_registrant.*
+windows/runner/GeneratedPluginRegistrant.*
+
 # Android Studio
 .idea/
 .gradle/
