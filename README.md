@@ -60,6 +60,16 @@
 3. 将APK拖拽到模拟器窗口安装
 4. 运行应用
 
+### 构建Windows桌面版本（推荐）
+
+现在支持Windows原生桌面应用，无需模拟器：
+
+1. **访问仓库Actions页面**: https://github.com/luoyabo/Geometry3DApp/actions
+2. **触发Windows构建**: 点击"Build Windows Executable" → "Run workflow"
+3. **等待构建完成**: 约10-15分钟
+4. **下载EXE文件**: 在"Artifacts"区域下载 `geometry_3d_app.exe`
+5. **运行应用**: 双击EXE文件即可在Windows上运行
+
 ## 项目运行
 
 1. 打开Android Studio
@@ -80,6 +90,7 @@ Geometry3DApp/
 │   ├── widgets/        # 自定义组件
 │   └── utils/          # 工具类
 ├── android/            # Android平台代码
+├── windows/            # Windows桌面平台代码
 ├── ios/                # iOS平台代码
 └── pubspec.yaml        # 依赖配置
 ```
